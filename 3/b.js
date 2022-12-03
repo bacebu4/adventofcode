@@ -23,8 +23,8 @@ const pointsMap = {
   ...formPointsMap({ firstChar: 'A', lastChar: 'Z', startPoints: 27 }),
 };
 
-const findCommonCharacter = args => {
-  return args[0].split('').find(c => args.slice(1).every(l => l.includes(c)));
+const findCommonCharacter = ([firstLine, ...restLines]) => {
+  return firstLine.split('').find(c => restLines.every(l => l.includes(c)));
 };
 
 const result = file
