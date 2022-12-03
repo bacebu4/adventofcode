@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import { groupLinesReducer } from '../common/group-lines-reducer.js';
 
 const file = await fs.readFile('input.txt').then(f => f.toString());
 
@@ -28,20 +29,7 @@ const findCommonCharacter = args => {
 
 const result = file
   .split('\n')
-  .reduce(
-    (acc, val) => {
-      const currentGroup = acc[acc.length - 1];
-
-      if (currentGroup.length < 3) {
-        currentGroup.push(val);
-      } else {
-        acc.push([val]);
-      }
-
-      return acc;
-    },
-    [[]],
-  )
+  .reduce(...groupLinesReducer(({ currentGroup }) => currentGroup.length < 3))
   .map(g => findCommonCharacter(g))
   .reduce((acc, val) => acc + pointsMap[val], 0);
 
