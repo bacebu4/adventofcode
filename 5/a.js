@@ -32,12 +32,10 @@ const getResultedStack = () => {
   const stacks = formSchemesByStack();
 
   parsedMoves.forEach(({ amount, from, to }) => {
-    for (let i = 0; i < amount; i += 1) {
-      const fromStack = stacks[from];
-      const toStack = stacks[to];
-      const element = fromStack.shift();
-      toStack.unshift(element);
-    }
+    const fromStack = stacks[from];
+    const toStack = stacks[to];
+    const elements = fromStack.splice(0, amount).reverse();
+    toStack.unshift(...elements);
   });
 
   return stacks;
