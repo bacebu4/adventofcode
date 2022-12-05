@@ -42,8 +42,7 @@ const getResultedStack = () => {
 
 const result = Object.entries(getResultedStack())
   .sort(([key1], [key2]) => Number(key1) - Number(key2))
-  .map(([, value]) => value)
-  .map(([firstElement]) => firstElement)
+  .map(([, [firstElement]]) => firstElement)
   .join('');
 
 console.log(result);
