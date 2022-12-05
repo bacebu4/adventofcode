@@ -5,8 +5,7 @@ const file = await fs.readFile('input.txt').then(f => f.toString());
 
 const [scheme, moves] = file.split('\n\n').map(l => l.split('\n'));
 
-scheme.pop();
-const parsedScheme = scheme.map(l =>
+const parsedScheme = scheme.slice(0, scheme.length - 1).map(l =>
   l
     .split('')
     .reduce(...groupLinesReducer(({ currentGroup }) => currentGroup.length < 4))
