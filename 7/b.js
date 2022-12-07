@@ -25,7 +25,7 @@ const { result: fileTree } = file
   .reduce(
     (acc, [command, ...commandOutput]) => {
       if (command.startsWith('cd')) {
-        const path = command.split(' ')[1];
+        const [, path] = command.split(' ');
         return { cursor: [...acc.cursor, path], result: acc.result };
       }
 
@@ -60,8 +60,8 @@ const findDirectoryTrees = (target, acc = []) =>
     return findDirectoryTrees(val, acc);
   }, acc);
 
-const TOTAL_SPACE = 70000000;
-const SPACE_REQUIRED = 30000000;
+const TOTAL_SPACE = 70_000_000;
+const SPACE_REQUIRED = 30_000_000;
 
 const spaceUsed = calculateSize(fileTree);
 const freeSpace = TOTAL_SPACE - spaceUsed;

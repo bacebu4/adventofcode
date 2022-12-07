@@ -25,7 +25,7 @@ const { result: fileTree } = file
   .reduce(
     (acc, [command, ...commandOutput]) => {
       if (command.startsWith('cd')) {
-        const path = command.split(' ')[1];
+        const [, path] = command.split(' ');
         return { cursor: [...acc.cursor, path], result: acc.result };
       }
 
