@@ -30,12 +30,9 @@ const getScenicScore = (i, j) => {
   const leftValues = range(j).map(v => matrix[i][j - v - 1]);
   const rightValues = range(matrix[0].length - j - 1).map(v => matrix[i][j + v + 1]);
 
-  return (
-    getDistance(topValues) *
-    getDistance(bottomValues) *
-    getDistance(leftValues) *
-    getDistance(rightValues)
-  );
+  const surroundingValues = [topValues, bottomValues, leftValues, rightValues];
+
+  return surroundingValues.map(values => getDistance(values)).reduce((acc, val) => acc * val, 1);
 };
 
 for (let i = 0; i < matrix.length; i += 1) {

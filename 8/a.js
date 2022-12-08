@@ -22,14 +22,9 @@ const isSeen = (i, j) => {
   const leftValues = range(j).map(v => matrix[i][j - v - 1]);
   const rightValues = range(matrix[0].length - j - 1).map(v => matrix[i][j + v + 1]);
 
-  // console.log({ topValues, bottomValues, leftValues, rightValues });
+  const surroundingValues = [topValues, bottomValues, leftValues, rightValues];
 
-  return (
-    topValues.every(value => value < currentElementValue) ||
-    bottomValues.every(value => value < currentElementValue) ||
-    leftValues.every(value => value < currentElementValue) ||
-    rightValues.every(value => value < currentElementValue)
-  );
+  return surroundingValues.some(values => values.every(v => v < currentElementValue));
 };
 
 for (let i = 0; i < matrix.length; i += 1) {
