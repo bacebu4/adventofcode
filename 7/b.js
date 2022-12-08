@@ -18,6 +18,27 @@ const calculateSize = target => {
   );
 };
 
+const cdCommandReducer = (acc, [command]) => {
+  const [, path] = command.split(' ');
+  return { cursor: [...acc.cursor, path], result: acc.result };
+};
+
+const lsCommandReducer = (acc, [, ...commandOutput]) => {
+  const currentNode = get(acc.cursor, acc.result);
+
+  commandOutput.forEach(outputLine => {
+    if (outputLine.startsWith('dir ')) {
+      const [, dirName] = outputLine.split(' ');
+      currentNode[dirName] = {};
+    } else {
+      const [fileSize, fileName] = outputLine.split(' ');
+      currentNode[fileName] = Number(fileSize);
+    }
+  });
+
+  return acc;
+};
+
 const { result: fileTree } = file
   .split('$ ')
   .map(l => l.split('\n').filter(Boolean))
@@ -25,24 +46,11 @@ const { result: fileTree } = file
   .reduce(
     (acc, [command, ...commandOutput]) => {
       if (command.startsWith('cd')) {
-        const [, path] = command.split(' ');
-        return { cursor: [...acc.cursor, path], result: acc.result };
+        return cdCommandReducer(acc, [command, ...commandOutput]);
       }
 
       if (command.startsWith('ls')) {
-        const current = get(acc.cursor, acc.result);
-
-        commandOutput.forEach(o => {
-          if (o.startsWith('dir ')) {
-            const [, dirName] = o.split(' ');
-            current[dirName] = {};
-          } else {
-            const [fileSize, fileName] = o.split(' ');
-            current[fileName] = Number(fileSize);
-          }
-        });
-
-        return acc;
+        return lsCommandReducer(acc, [command, ...commandOutput]);
       }
 
       throw new Error('Not supported');
