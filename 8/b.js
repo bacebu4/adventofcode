@@ -12,7 +12,7 @@ const range = n => {
   return result;
 };
 
-const distances = [];
+const scores = [];
 
 const getScenicScore = (i, j) => {
   const currentElementValue = matrix[i][j];
@@ -37,8 +37,8 @@ const getScenicScore = (i, j) => {
 
 for (let i = 0; i < matrix.length; i += 1) {
   for (let j = 0; j < matrix[0].length; j += 1) {
-    distances.push(getScenicScore(i, j));
+    scores.push(getScenicScore(i, j));
   }
 }
 
-console.log({ result: Math.max(...distances) });
+console.log({ result: Math.max(...scores) });
